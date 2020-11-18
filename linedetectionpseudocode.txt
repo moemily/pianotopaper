@@ -1,0 +1,41 @@
+#line detection pseudo code
+
+#preform edge detection with sobel, canny, lapalcian
+#(whaever we have dont in class)
+#The edge image will be the input to the hough line transform
+#this is edge_im, its N,M
+
+d = length of edge image's diagonal
+rho = [-d,d] #quantized to num_rhos
+theta = [0,180] #for unique lines, quantized to num_thetas
+
+
+acc = zeros(num_rhos, num_thetas)
+for i 1:N 
+    for j 1:M 
+        if edge_im[i,j] == 1
+            for k 1:num_thetas
+                rho_tmp = x*cos(theta[k]) + y*sin(theta[k]) ????
+                    inx = find(rho_temp, rho)
+                    acc[inx, k] += 1
+for i 1:num_rhos
+    for j in num_thetas
+        if acc[i,j] >= thres
+            rho_inx = i
+            theta_inx = j
+            rho_i = rho[i]
+            theta_j = theta[j]
+            convert to y = ax+b ???
+return these lines
+
+after processing:
+1) go through every set of 4 of these lines,
+    keep only those that result in >= 4 intersections
+2) transform quadrialtersal to rectangels using homogenus tranformation
+3) check if 1/3 of lower (upper) part of rectangle has maximum brightness
+    (mean of all intensities)
+4) run connected components labelling algorithm with binary thres [28] [29]
+4) check if rectangle has the maximum number of black keys counted in 
+    upper (lower) 2/3
+5) select the keyboard lines from the conditons
+ 
