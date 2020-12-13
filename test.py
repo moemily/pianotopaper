@@ -361,35 +361,35 @@ def sort_coords(sub_list):
 
 #sorts into tl bl br tr
 def sort_box_coordinates(box):   
-    y1 = None
-    y2 = None
-    cur_min_y = BG_WIDTH
-    sec_min_y = BG_WIDTH
+    x1 = None
+    x2 = None
+    cur_min_x = BG_WIDTH
+    sec_min_x = BG_WIDTH
     for i in range(4):
-        if box[i][1] < cur_min_y:
-            sec_min_y = cur_min_y
-            y1 = y2
-            cur_min_y = box[i][1]
-            y2 = i
-        elif box[i][1] < sec_min_y:
-            sec_min_y = box[i][1]
-            y1 = i
+        if box[i][0] < cur_min_x:
+            sec_min_x = cur_min_x
+            x1 = x2
+            cur_min_x = box[i][0]
+            x2 = i
+        elif box[i][0] < sec_min_x:
+            sec_min_x = box[i][0]
+            x1 = i
     one = None
     two = None
     three = None
     four = None
     indicies = [0, 1, 2, 3]
     print(indicies)
-    if (box[y1][0] < box[y2][0]):
-        one = y1
-        two = y2
+    if (box[x1][1] < box[x2][1]):
+        one = x1
+        two = x2
     else:
-        one = y2
-        two = y1
+        one = x2
+        two = x1
     indicies.remove(one)
     indicies.remove(two)
     print(box.shape)
-    if box[indicies[0]][0] > box[indicies[1]][0]:
+    if box[indicies[0]][1] > box[indicies[1]][1]:
         three = indicies[0]
         four = indicies[1]
     else:
@@ -414,7 +414,7 @@ def get_background_image(frame, boxes):
         sorted_box = sort_box_coordinates(box)
         print("box:", box)
         print("sorted_box: ", sorted_box)
-        candidate = get_homography_image(frame, box)
+        candidate = get_homography_image(frame, sort_box_coordinates(box))
         test_mean, test_keys, test_seg = test_if_image_is_keyboard(candidate)
         if test_mean > BG_MEAN and test_keys >= BG_KEYS:
             BG_MEAN = test_mean
@@ -474,7 +474,7 @@ def get_keys(coords):
     global BG_SEG
     key_list = []
     for i in coords:
-        key_list.append(BG_SEG[i[0],i[1]])
+        key_list.append(BG_SEG[0,i])
     return key_list
 
 def do_stuff():
@@ -513,9 +513,17 @@ def do_stuff():
     cv2.imwrite("bgcheck.jpg", orig)
     #this one is for the everynote finger video
     #boxes = np.array([[[46,374],[49,556],[1245,548],[1243,356]],[[16,3544],[19,526],[1215,518],[1213,326]]])
-    #trying to get a box on the tilted one to work
-    boxes = np.array([[[497,1196],[646,1240],[437,70],[257,130]],[[16,3544],[19,526],[1215,518],[1213,326]]])
-    cv2.imshow("homogaphy", get_homography_image(orig, boxes[0]))
+
+
+    # this one works
+    # boxes = np.array([[[130,257],[70,437],[1240,646],[1196,497]],[[16,3544],[19,526],[1215,518],[1213,326]]])
+    boxes1 = np.array([[[130,257],[70,437],[1240,646],[1196,497]],[[16,3544],[19,526],[1215,518],[1213,326]]])
+    print(boxes1[0])
+    print("^ correct")
+    boxes = np.array([[[70,437],[1240,646],[130,257],[1196,497]],[[16,3544],[19,526],[1215,518],[1213,326]]])
+    print(sort_box_coordinates(boxes[0]))
+    print("^ sorted")
+    cv2.imshow("homography", get_homography_image(orig, sort_box_coordinates(boxes[0])))
     bg = get_background_image(orig, boxes)
     if (bg == False):
         print("Was not able to find background from the boxes provided")
