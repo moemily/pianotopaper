@@ -507,7 +507,7 @@ def do_stuff():
     # print("Getting Background Image")
     # success = get_background_image(orig, boxes)
     # print("Was a success: ", success)
-    # cv2.imshow("background", BG_IMAGE)
+    # cv2.imshow("background", BG_IMAGE) 
 
     orig = copy.deepcopy(buf[0])
     cv2.imwrite("bgcheck.jpg", orig)
