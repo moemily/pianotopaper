@@ -206,40 +206,26 @@ def do_stuff():
 
     posbin, negbin = bg_subtraction(bg, frame)
 
-    # cv2.imwrite("posbin.jpg",posbin)
-
     # cv2.imshow("positive", posbin)
     # cv2.imshow("negative", negbin)
-    
-    # #SKEWED PIANO JPEG
-    # p = cv2.imread("frame.jpg")
-    # posbin = cv2.imread("posbin.jpg")
-    global BG_WIDTH
-    global BG_HEIGHT 
-    BG_WIDTH = posbin.shape[1]
-    BG_HEIGHT = posbin.shape[0]
-    # print(WIDTH, HEIGHT)
-    gimg = cv2.cvtColor(posbin, cv2.COLOR_BGR2GRAY)
-    
-    blobs_found = blobs(gimg)
+
+    blobs_found = blobs(posbin)
     left, right = hand_edges(blobs_found, k_size=5)
     
     # print("left: ", left)
     # print("right: ", right)
     # left = 216; right = 920
     height_crop = int(BG_HEIGHT*3/5)
-    pressarea = gimg[0:height_crop,left:right] 
+    pressarea = posbin[0:height_crop,left:right] 
     cv2.imshow("cropped", pressarea)
 
-
-    coord = skinny_boi(gimg, left, right)
+    coord = skinny_boi(posbin, left, right)
     print("coords: ", coord)
 
     for x in coord :
         # Draw a diagonal blue line with thickness of 5 px
         posbin = cv2.line(posbin,(x,0),(x,BG_HEIGHT),(255,0,0),1)
-        p = cv2.line(p,(x,0),(x,BG_HEIGHT),(255,0,0),1)
-
+        frame = cv2.line(frame,(x,0),(x,BG_HEIGHT),(255,0,0),1)
     
     cv2.imshow("posbin", posbin)
     cv2.imshow("frame", frame)
