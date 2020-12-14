@@ -146,7 +146,7 @@ def find_boxes(line1, line2, intersect) :
     for i in range(len(intersect)) :
         for j in range(i+1, len(intersect)) :
             dist = math.dist(intersect[i], intersect[j])
-            if  (dist > (1/16 * HEIGHT)):
+            if  (dist > (1/7 * HEIGHT)):
                 if   equalLines(line2[i], line2[j]) and not equalLines(line1[i],line1[j]) : 
                     same_line.append(((i,j), line2[i], (line1[i], line1[j])))  
                 elif equalLines(line1[i], line1[j]) and not equalLines(line2[i],line2[j]) : 
@@ -177,7 +177,9 @@ def find_boxes(line1, line2, intersect) :
             i2, j2 = same_line[l2][0]
             dist1 = math.dist(intersect[i1], intersect[i2]) # assumes dist(j1,j2) appromately equals dist(i1,i2)
             dist2 = math.dist(intersect[i1], intersect[j2]) # assumes dist(j1,i2) appromately equals dist(i1,j2)
-            if dist1 > (1/16 * HEIGHT) and dist2 > (1/16 * HEIGHT) :
+            dist3 = math.dist(intersect[j1], intersect[i2]) # assumes dist(j1,j2) appromately equals dist(i1,i2)
+            dist4 = math.dist(intersect[j1], intersect[j2]) # assumes dist(j1,j2) appromately equals dist(i1,i2)
+            if dist1 > (1/7 * HEIGHT) and dist2 > (1/7 * HEIGHT) and dist3 > (1/7 * HEIGHT) and dist4 > (1/7 * HEIGHT)  :
                 if not equalLines(same_line[l1][1],same_line[l2][1]) : # not the same line of intersection
                     if i1 != i2 and j1 != j2 and i1 != j2 and j1 != j2 : # no shared intersections
                         linei1, linej1 = same_line[l1][2]
@@ -203,7 +205,6 @@ def find_boxes(line1, line2, intersect) :
                 print("Iteration: ", iteration)
             iteration+=1
     return np.asarray(boxes)
-
 '''
 in:
   line1 - 1 x 4 numpyarray (x1,y1,x2,y2)

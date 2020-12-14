@@ -183,24 +183,19 @@ def skinny_boi(img, left, right) :
     return press_coord
 
 def do_stuff():
-    #STRAIGHT PIANO VIDEO
-    
-    # cap = cv2.VideoCapture("EveryNoteOneFinger.mp4")
-    # frame_cnt = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-    # global WIDTH
-    # global HEIGHT 
-    # WIDTH = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-    # HEIGHT = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    # buf = np.empty((frame_cnt, HEIGHT, WIDTH, 3), np.dtype('uint8'))
-    # print(WIDTH, HEIGHT)
-    # fc = 0
-    # ret = True
-    # while (fc < frame_cnt and ret):
-    #     ret, buf[fc] = cap.read()
-    #     fc += 1
-    # #0 is magic number, frame without hands in it
-    # gimg = cv2.cvtColor(buf[0], cv2.COLOR_BGR2GRAY)
-    # cap.release()
+
+    cap = cv2.VideoCapture("IMG_8040.MOV")
+    frame_cnt = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    global WIDTH
+    global HEIGHT 
+    WIDTH = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    HEIGHT = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    buf = np.empty((frame_cnt, HEIGHT, WIDTH, 3), np.dtype('uint8'))
+    fc = 0
+    ret = True
+    while (fc < frame_cnt and ret):
+        ret, buf[fc] = cap.read()
+        fc += 1
 
     boxes = np.array([[190,390],[97,650],[1865,975],[1800,750]]) #for 8040
     bg = get_homography_image(buf[0], boxes)
