@@ -167,7 +167,7 @@ def find_boxes(line1, line2, intersect) :
             if (iteration % 1000 == 0):
                 print("Iteration: ", iteration)
             iteration+=1
-    print("fuckshit stack")     
+                
     iteration = 0       
     # print(same_line)            
     # find boxes :)
