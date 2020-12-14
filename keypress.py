@@ -153,20 +153,13 @@ def skinny_boi(img, left, right) :
             fatness_left = np.sum(np.sum(fat_kernel_left)) 
             fatness_right = np.sum(np.sum(fat_kernel_right))
 
-            if tallness > (kern_h*255)*0.5 :  #tallness > (tall_kern_w*kern_h*255)*0.5 :
+            if tallness > (kern_h*255)*0.5 : # tall kernel > 50% white
                 # print("j ", j, "fatty: ", fatness)
-                if fatness_left < (fat_k*kern_h*255)*0.1 and fatness_right < (fat_k*kern_h*255)*0.1: # tall kernel > 50% white and fat kernel < 10 white
+                if fatness_left < (fat_k*kern_h*255)*0.1 and fatness_right < (fat_k*kern_h*255)*0.1: # fat kernel < 10% white on left and right
                 # then this is a good x coordinate aka j, skinny and tall line
                     pressed_j[j] = 1
                     # print(j)
                     break
-            # if fatness < (fat_kern_w*kern_h*255)*0.1:
-            #     print("j ", j, "tall: ", tallness)
-            #     if tallness > (tall_kern_w*kern_h*255)*0.5 : # tall kernel > 50% white and fat kernel < 10 white
-            #     # then this is a good x coordinate aka j, skinny and tall line
-            #         pressed_j[j] = 1
-            #         # print(j)
-            #         break
 
     # find center x coordinate of each press
     j = left
@@ -206,15 +199,9 @@ def do_stuff():
 
     posbin, negbin = bg_subtraction(bg, frame)
 
-    # cv2.imshow("positive", posbin)
-    # cv2.imshow("negative", negbin)
-
     blobs_found = blobs(posbin)
     left, right = hand_edges(blobs_found, k_size=5)
     
-    # print("left: ", left)
-    # print("right: ", right)
-    # left = 216; right = 920
     height_crop = int(BG_HEIGHT*3/5)
     pressarea = posbin[0:height_crop,left:right] 
     cv2.imshow("cropped", pressarea)
@@ -227,8 +214,7 @@ def do_stuff():
         posbin = cv2.line(posbin,(x,0),(x,BG_HEIGHT),(255,0,0),1)
         frame = cv2.line(frame,(x,0),(x,BG_HEIGHT),(255,0,0),1)
     
-    cv2.imshow("posbin", posbin)
-    cv2.imshow("frame", frame)
+    # cv2.imshow("posbin", posbin)
 
     key = cv2.waitKey(0)
     while (key != ord('q')) :
