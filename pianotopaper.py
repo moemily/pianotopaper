@@ -17,7 +17,7 @@ def black_rect(img):
         for j in range(0,WIDTH):
             black = False
             if img_pad[i,j] == 0:
-                pp = j
+                pp = j 
                 for p in range(j,j+key_len):
                     if img_pad[i,p] == 0:
                         black = True
